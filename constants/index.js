@@ -5,4 +5,4 @@ import icons from './icons';
 import dummyData from './dummyData';
 
 // export { cons, theme, COLORS, SIZES, FONTS, images, icons, dummyData };
-export { theme, COLORS, icons, dummyData, images, constants };
+export { theme, COLORS, icons, dummyData, images, constants, SIZES, FONTS };
