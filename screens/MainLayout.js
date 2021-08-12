@@ -87,6 +87,8 @@ const MainLayout = ({
   selectedTab,
   setSelectedTab,
 }) => {
+  const flatListRef = React.useRef();
+
   /* Reanimated Shared Value  */
   const homeTabFlex = useSharedValue(1);
   const homeTabColor = useSharedValue(COLORS.white);
@@ -163,6 +165,7 @@ const MainLayout = ({
 
   React.useEffect(() => {
     if (selectedTab === constants.screens.home) {
+      flatListRef?.current?.scrollToIndex({ index: 0, animated: false });
       homeTabFlex.value = withTiming(4, { duration: 500 });
       homeTabColor.value = withTiming(COLORS.primary, { duration: 500 });
     } else {
@@ -170,6 +173,7 @@ const MainLayout = ({
       homeTabColor.value = withTiming(COLORS.white, { duration: 500 });
     }
     if (selectedTab === constants.screens.search) {
+      flatListRef?.current?.scrollToIndex({ index: 1, animated: false });
       searchTabFlex.value = withTiming(4, { duration: 500 });
       searchTabColor.value = withTiming(COLORS.primary, { duration: 500 });
     } else {
@@ -177,6 +181,7 @@ const MainLayout = ({
       searchTabColor.value = withTiming(COLORS.white, { duration: 500 });
     }
     if (selectedTab === constants.screens.cart) {
+      flatListRef?.current?.scrollToIndex({ index: 2, animated: false });
       cartTabFlex.value = withTiming(4, { duration: 500 });
       cartTabColor.value = withTiming(COLORS.primary, { duration: 500 });
     } else {
@@ -184,6 +189,7 @@ const MainLayout = ({
       cartTabColor.value = withTiming(COLORS.white, { duration: 500 });
     }
     if (selectedTab === constants.screens.favourite) {
+      flatListRef?.current?.scrollToIndex({ index: 3, animated: false });
       favoriteTabFlex.value = withTiming(4, { duration: 500 });
       favoriteTabColor.value = withTiming(COLORS.primary, { duration: 500 });
     } else {
@@ -191,6 +197,7 @@ const MainLayout = ({
       favoriteTabColor.value = withTiming(COLORS.white, { duration: 500 });
     }
     if (selectedTab === constants.screens.notification) {
+      flatListRef?.current?.scrollToIndex({ index: 4, animated: false });
       notificationTabFlex.value = withTiming(4, { duration: 500 });
       notificationTabColor.value = withTiming(COLORS.primary, {
         duration: 500,
@@ -251,7 +258,30 @@ const MainLayout = ({
       />
       {/* Content */}
       <View style={{ flex: 1 }}>
-        <Text>MainLayout</Text>
+        <FlatList
+          ref={flatListRef}
+          horizontal
+          scrollEnabled={false}
+          pagingEnabled
+          snapToAlignment='center'
+          snapToInterval={SIZES.width}
+          showsHorizontalScrollIndicator={false}
+          data={constants.bottom_tabs}
+          keyExtractor={(item) => `${item.id}`}
+          renderItem={({ item, index }) => {
+            return (
+              <View style={{ height: SIZES.height, width: SIZES.width }}>
+                {item.label == constants.screens.home && <Home />}
+                {item.label == constants.screens.search && <Search />}
+                {item.label == constants.screens.cart && <CartTab />}
+                {item.label == constants.screens.favourite && <Favourite />}
+                {item.label == constants.screens.notification && (
+                  <Notification />
+                )}
+              </View>
+            );
+          }}
+        />
       </View>
       {/* Footer */}
       <View
